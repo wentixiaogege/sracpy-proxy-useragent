@@ -39,17 +39,15 @@ user-agent working like a tag of the browsers ,change it randomly can hide your 
 two steps: 
          1. edit the settings.py 
          2. add random_useragent.py:
-	 class RotateUserAgentMiddleware(UserAgentMiddleware):
-		    def __init__(self, user_agent=''):
-			self.user_agent = user_agent
-
-		    def process_request(self, request, spider):
-			ua = random.choice(self.user_agent_list)
+class RotateUserAgentMiddleware(UserAgentMiddleware):
+		  def __init__(self, user_agent=''):
+			   self.user_agent = user_agent
+		  def process_request(self, request, spider):
+			   ua = random.choice(self.user_agent_list)
 			if ua:
 			    request.headers.setdefault('User-Agent', ua)
-
-		    #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
-		    #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
+		  #the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape
+		  #for more user agent strings,you can find it in http://www.useragentstring.com/pages/useragentstring.php
 		    user_agent_list = [.........]
 
 ###using http-proxy
