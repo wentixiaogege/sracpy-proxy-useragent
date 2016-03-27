@@ -38,17 +38,20 @@ Adding splash directive makes the script to call Splash, through render.html API
 user-agent working like a tag of the browsers ,change it randomly can hide your info to the server:
 two steps: 
          1. edit the settings.py 
-         2. add random_useragent.py:
+         2. add random_useragent.py
 class RotateUserAgentMiddleware(UserAgentMiddleware):
     def __init__(self, user_agent=''):
         self.user_agent = user_agent
 
-    def process_request(self, request, spider):
+    def process_request(self,request,spider):
         ua = random.choice(self.user_agent_list)
         if ua:
+            print ua
             request.headers.setdefault('User-Agent', ua)
 
-        user_agent_list = [.......]
+    #turns out only several ip works here
+    user_agent_list = [......]
+
 
 ###using http-proxy
 Working like the user-agent 
