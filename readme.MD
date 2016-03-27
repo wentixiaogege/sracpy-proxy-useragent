@@ -107,3 +107,11 @@ two ways for server block request ip
 1. random proxy for user-agent
 2. random proxy ip
 
+
+##understanding deploy
+
+here the deploy means that you can deploy your project and your spiders to the deamon server scrapyd ,just like you can deploy your website to the tomcat servers.
+
+your can learn how to do this from :
+https://scrapyd.readthedocs.org/en/latest/install.html
+
