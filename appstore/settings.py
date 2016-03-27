@@ -24,7 +24,7 @@ NEWSPIDER_MODULE = 'appstore.spiders'
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY=3
+#DOWNLOAD_DELAY=5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN=16
 #CONCURRENT_REQUESTS_PER_IP=16
@@ -49,10 +49,16 @@ NEWSPIDER_MODULE = 'appstore.spiders'
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'appstore.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
-
+DOWNLOADER_MIDDLEWARES = {
+    #'appstore.middlewares.MyCustomDownloaderMiddleware': 543,
+    'scrapyjs.SplashMiddleware' :750,
+    'scrapy.downloadermiddleware.useragent.UserAgentMiddleware' : None,
+    'appstore.random_useragent.RotateUserAgentMiddleware' :400,
+    'appstore.proxy.RandomProxyMiddleware': 100,
+}   
+SPASH_URL = 'http://localhost:8050/'
+DUPEFILTER_CLASS = 'scrapyjs.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapyjs.SplashAwareFSCacheStorage'
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
@@ -61,9 +67,9 @@ NEWSPIDER_MODULE = 'appstore.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'appstore.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'appstore.pipelines.AppstorePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

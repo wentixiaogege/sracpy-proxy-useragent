@@ -8,40 +8,39 @@ from scrapy import Selector
 from appstore.items import AppstoreItem
 
 class HuaweiAppSpider(scrapy.Spider):
-    name = "HuaweiAppSpider"
+    name = "huawei"
     allowed_domains = ["appstore.huawei.com"]
     start_urls = [
         "http://appstore.huawei.com/more/all/1",
-        "http://appstore.huawei.com/more/soft/1",
-        "http://appstore.huawei.com/more/recommend/1",
-        "http://appstore.huawei.com/more/game/1",
-        "http://appstore.huawei.com/more/newPo/1",
-        "http://appstore.huawei.com/more/newUp/1",
-        "http://appstore.huawei.com/search/0/1",
-        "http://appstore.huawei.com/search/1/1",
-        "http://appstore.huawei.com/search/2/1",
-        "http://appstore.huawei.com/search/3/1",
-        "http://appstore.huawei.com/search/4/1",
-        "http://appstore.huawei.com/search/5/1",
-        "http://appstore.huawei.com/search/6/1",
-        "http://appstore.huawei.com/search/7/1",
-        "http://appstore.huawei.com/search/8/1",
-        "http://appstore.huawei.com/search/9/1",
-        "http://appstore.huawei.com/search/app/1",
-        "http://appstore.huawei.com/search/software/1",
     ]
 
+    script = """
+        function main(splash)
+            splash:autoload("https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+            splash:go("http://example.com")
+            splash:runjs("$('#some-button').click()")
+            return splash:html()
+        end
+        """
     def parse(self, response):
         hrefs = response.selector.xpath('.//h4[@class="title"]/a/@href')
 
         for href in hrefs:
-            yield scrapy.Request(href.extract(),callback = self.parse_recommended)
-        #next page 
-        next_page = self.find_next_page(response.url)
-        if next_page:
-            url = next_page
-            yield scrapy.Request(self.find_next_page(response.url),self.parse)
-    
+            yield scrapy.Request(href.extract(),callback = self.parse_recommended,meta={
+             'splash': {
+                     'endpoint': 'render.html',
+                     'args': {'wait': 0.5,
+                              }
+                 }
+                 })
+        
+        # yield scrapy.Request(response.url,self.parse,meta={
+        #     'splash': {
+        #             'endpoint': 'execute',
+        #             'args': {'lua_source': script,
+        #                      }
+        #         }
+        #         })
     def find_next_page(self,url):
         try:
             page_num_str = url.split('/')[-1]
@@ -52,7 +51,6 @@ class HuaweiAppSpider(scrapy.Spider):
             print "### page cannot be handled"
             print url
             return "http://google.com"
-
     def parse_recommended(self,respone):
         item = AppstoreItem();
 
@@ -74,6 +72,6 @@ class HuaweiAppSpider(scrapy.Spider):
             recommenTitle = div.xpath('./p[@class="name"]/a/@title').extract_first().encode('utf-8')
             recommens += "{0}:{1},".format(recommenAppId,recommenTitle)
 
-        item['recommended'] = recommens
+        #item['recommended'] = recommens
 
         yield item

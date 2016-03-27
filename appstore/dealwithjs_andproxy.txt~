@@ -1,0 +1,4 @@
+install docker + spash to handle with the js rendering service `:1
+curl -fsSL https://get.docker.com/ | sh
+
+install scrapyjs
