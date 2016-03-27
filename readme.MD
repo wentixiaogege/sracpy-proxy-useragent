@@ -39,6 +39,7 @@ user-agent working like a tag of the browsers ,change it randomly can hide your 
 two steps: 
          1. edit the settings.py 
          2. add random_useragent.py
+
 class RotateUserAgentMiddleware(UserAgentMiddleware):
     def __init__(self, user_agent=''):
         self.user_agent = user_agent
@@ -55,7 +56,6 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
 
 ###using http-proxy
 Working like the user-agent 
-example
 class RandomProxyMiddleware(HttpProxyMiddleware):
     def __init__(self, proxy_ip=''):
         self.proxy_ip = proxy_ip
@@ -70,4 +70,40 @@ class RandomProxyMiddleware(HttpProxyMiddleware):
     proxy_list = [  "http://206.109.4.94:8080",]
 
 get the proxy your can refer to http://spys.ru/en/http-proxy-list/
+
+
+##hide host for server
+
+install docker + spash to handle with the js rendering service `:1
+
+1.install docker
+curl -fsSL https://get.docker.com/ | sh
+2.make sure docker works
+sudo docker run hello-world
+3.install rendering servicer
+sudo docker pull scrapinghub/splash
+4.
+sudo docker run -p 8050:8050 scrapinghub/splash
+or???
+sudo docker run -p 5023:5023 -p 8050:8050 -p 8051:8051 scrapinghub/splash
+
+5.
+install scrapyjs
+ sudo pip install scrapyjs
+
+splash now available at 0.0.0.0 at ports 8050
+
+communications
+
+
+request->splash service -> huawei app store
+                              |
+                           splash service 
+                              | js rendering
+                           response
+                            
+     
+two ways for server block request ip
+1. random proxy for user-agent
+2. random proxy ip
 
