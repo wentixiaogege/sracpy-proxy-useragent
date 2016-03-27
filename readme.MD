@@ -54,7 +54,7 @@ two steps:
 
 ###using http-proxy
 Working like the user-agent 
-#example
+example
 class RandomProxyMiddleware(HttpProxyMiddleware):
     def __init__(self, proxy_ip=''):
         self.proxy_ip = proxy_ip
@@ -67,4 +67,6 @@ class RandomProxyMiddleware(HttpProxyMiddleware):
 
     #turns out only several ip works here
     proxy_list = [  "http://206.109.4.94:8080",]
+
+get the proxy your can refer to http://spys.ru/en/http-proxy-list/
 
